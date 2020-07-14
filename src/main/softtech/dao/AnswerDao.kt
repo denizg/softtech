@@ -15,7 +15,7 @@ open class AnswerDao : IBaseDao<Answer> {
   @Resource
   private lateinit var sessionFactory: SessionFactory
 
-  fun hello() {
+  override fun hello() {
 //    TODO("Not yet implemented")
     val a = 2
     val b = 4
