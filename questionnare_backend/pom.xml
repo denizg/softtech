@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>tr.com.softtech</groupId>
-    <artifactId>personal_questionnare</artifactId>
+    <artifactId>questionnare_backend</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
@@ -73,8 +73,6 @@
             <artifactId>jersey-spring5</artifactId>
             <version>${jersey.version}</version>
         </dependency>
-        
-        
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
@@ -173,5 +171,5 @@
         </plugins>
     </build>
 
-    
+
 </project>

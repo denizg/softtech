@@ -4,6 +4,7 @@ import {SafeAreaView, SectionList, StyleSheet, Text, View} from 'react-native';
 import Constants from 'expo-constants';
 
 import RNPickerSelect from 'react-native-picker-select';
+import Button from 'react-native-web/dist/exports/Button';
 
 const DATA = [
     {
@@ -80,50 +81,9 @@ const DATA = [
     },
 ];
 
-const sports = [
-    {
-        label: 'Football',
-        value: 'football',
-        question: 'fasdfa22',
-    },
-    {
-        label: 'Baseball',
-        value: 'baseball',
-        question: 'fasdfasdfs',
-    },
-    {
-        label: 'Hockey',
-        value: 'hockey',
-        question: 'fasdfa',
-    },
-];
-
-const question =
-    {
-        'question': {
-            'label': 'What is your gender?',
-            'value': null,
-            'color': '#9EA0A4',
-        },
-        'category': 'hard_fact',
-        'question_type': {
-            'type': 'single_choice',
-            'opt': [
-                {'label': 'not important', 'value': 'not important'},
-                {'label': 'important', 'value': 'important'},
-            ],
-        },
-    };
-
-
-const Item = ({title}) => (
-    <View style={styles.item}>
-        <Text style={styles.title}>{title}</Text>
-    </View>
-);
-
 const App = () => (
     <SafeAreaView style={styles.container}>
+        <View>
         <SectionList
             sections={DATA}
             keyExtractor={(item, index) => item + index}
@@ -131,7 +91,7 @@ const App = () => (
                 <RNPickerSelect
                     placeholder={item.question}
                     onValueChange={(value) => console.log(value)}
-                    items={question.question_type.opt}
+                    items={item.question_type.opt}
                 />
             }
             renderSectionHeader={({section: {title}}) => (
@@ -139,8 +99,18 @@ const App = () => (
             )}
 
         />
+        </View>
+        <View style={styles.pollEndButton}>
+            <Text style={styles.title}/>
+                <Button
+                    name='submit'
+                    onPress={() => {
+                        getMoviesFromApi(); //usual call like vanilla javascript, but uses this operator
+                    }}
+                    title="Submit">
+                </Button>
+        </View>
     </SafeAreaView>
-
 );
 
 const styles = StyleSheet.create({
@@ -149,10 +119,8 @@ const styles = StyleSheet.create({
         marginTop: Constants.statusBarHeight,
         marginHorizontal: 16,
     },
-    item: {
-        backgroundColor: '#f9c2ff',
-        padding: 20,
-        marginVertical: 8,
+    pollEndButton: {
+        alignItems: 'flex-end'
     },
     header: {
         fontSize: 32,
@@ -160,7 +128,8 @@ const styles = StyleSheet.create({
         marginVertical: 10,
     },
     title: {
-        fontSize: 24,
+        textAlign: 'center',
+        marginVertical: 8,
     },
     text: {
         fontSize: 30,
@@ -168,5 +137,16 @@ const styles = StyleSheet.create({
         color: 'red',
     },
 });
+
+const getMoviesFromApi = () => {
+    return fetch('http://localhost:8080/personal_questionnare_war_exploded/rest/show-on-screen/denix')
+        .then((response) => response.json())
+        .then((json) => {
+            return json.movies;
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+};
 
 export default App;

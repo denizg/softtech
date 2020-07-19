@@ -1,6 +1,8 @@
 package main.softtech.dao
 
 import main.softtech.db_model.Answer
+import main.softtech.db_model.NumberRange
+import main.softtech.db_model.Option
 import org.apache.log4j.LogManager
 import org.springframework.transaction.annotation.Transactional
 import javax.persistence.TypedQuery
@@ -9,36 +11,36 @@ import javax.persistence.criteria.CriteriaQuery
 import javax.persistence.criteria.Predicate
 import javax.persistence.criteria.Root
 
-open class AnswerDao : BaseDao<Answer>() {
+open class NumberRangeDao : BaseDao<NumberRange>() {
 
   @Transactional
-  override fun save(model: Answer) : Int{
+  override fun save(model: NumberRange) : Int{
     return try {
       getCurrentSession().save(model) as Int
     } catch (e: Exception) {
-      logger.error("Cannot save answer.", e)
+      logger.error("Cannot save option.", e)
       return -1
     }
   }
 
   @Transactional
-  override fun findSingleEntityByField(fieldName: String, fieldValue: String): List<Answer> {
+  override fun findSingleEntityByField(fieldName: String, fieldValue: String): List<NumberRange> {
     val builder: CriteriaBuilder = getCurrentSession().criteriaBuilder
-    val criteria: CriteriaQuery<Answer> = builder.createQuery(Answer::class.java)
-    val myObjectRoot: Root<Answer> = criteria.from(Answer::class.java)
+    val criteria: CriteriaQuery<NumberRange> = builder.createQuery(NumberRange::class.java)
+    val myObjectRoot: Root<NumberRange> = criteria.from(NumberRange::class.java)
     val likeRestriction: Predicate = builder.and(
       builder.like(myObjectRoot.get(fieldName), fieldValue)
     )
     criteria.select(myObjectRoot).where(likeRestriction)
-    val query: TypedQuery<Answer> = getCurrentSession().createQuery(criteria)
+    val query: TypedQuery<NumberRange> = getCurrentSession().createQuery(criteria)
     return query.resultList
   }
 
   companion object {
-    private val logger = LogManager.getLogger(AnswerDao::class.java)
+    private val logger = LogManager.getLogger(NumberRangeDao::class.java)
   }
 
-  override fun getAll(): List<Answer> {
+  override fun getAll(): List<NumberRange> {
     TODO("Not yet implemented")
   }
 }

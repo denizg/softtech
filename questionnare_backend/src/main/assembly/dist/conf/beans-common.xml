@@ -17,7 +17,7 @@
     <property name="username" value="${jdbc.username.postgre}"/>
     <property name="password" value="${jdbc.password.postgre}"/>
   </bean>
-  
+
   <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
     <property name="hibernateProperties">
       <props>
@@ -28,7 +28,7 @@
     <property name="dataSource" ref="postgreDataSource" />
     <property name="packagesToScan">
       <list>
-        <value>main.softtech.model</value>
+        <value>main.softtech.db_model</value>
         <value>main.softtech.dao</value>
         <value>main.softtech.services</value>
        </list>
@@ -36,4 +36,9 @@
   </bean>
 
   <bean id="answerDao" class="main.softtech.dao.AnswerDao"/>
+  <bean id="questionDao" class="main.softtech.dao.QuestionDao"/>
+  <bean id="optionDao" class="main.softtech.dao.OptionDao"/>
+  <bean id="conditionalQuestionDao" class="main.softtech.dao.ConditionalQuestionDao"/>
+  <bean id="numberRangeDao" class="main.softtech.dao.NumberRangeDao"/>
+
 </beans>
