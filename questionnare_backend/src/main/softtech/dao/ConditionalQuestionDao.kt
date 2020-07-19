@@ -1,7 +1,6 @@
 package main.softtech.dao
 
 import main.softtech.db_model.ConditionalQuestion
-import main.softtech.db_model.Option
 import org.apache.log4j.LogManager
 import org.springframework.transaction.annotation.Transactional
 import javax.persistence.TypedQuery
@@ -40,6 +39,10 @@ open class ConditionalQuestionDao : BaseDao<ConditionalQuestion>() {
   }
 
   override fun getAll(): List<ConditionalQuestion> {
+    TODO("Not yet implemented")
+  }
+
+  override fun findSingleEntityById(id: Int) : ConditionalQuestion?{
     TODO("Not yet implemented")
   }
 }

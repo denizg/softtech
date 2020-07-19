@@ -1,117 +1,115 @@
 import React from 'react';
-import {SafeAreaView, SectionList, StyleSheet, Text, View} from 'react-native';
-
+import {ActivityIndicator, SafeAreaView, SectionList, StyleSheet, Text, View, Alert} from 'react-native';
 import Constants from 'expo-constants';
-
 import RNPickerSelect from 'react-native-picker-select';
 import Button from 'react-native-web/dist/exports/Button';
 
-const DATA = [
-    {
-        title: 'Hard Facts',
-        data: [
-            {
-                'question': {
-                    'label': 'What is your gender?',
-                    'value': null,
-                    'color': '#9EA0A4',
-                },
-                'category': 'hard_fact',
-                'question_type': {
-                    'type': 'single_choice',
-                    'opt': [
-                        {'label': 'male', 'value': 'male'},
-                        {'label': 'female', 'value': 'female'},
-                        {'label': 'other', 'value': 'other'},
-                    ],
-                },
-            },
-            {
-                'question': {
-                    'label': 'How important is the gender of your partner?',
-                    'value': null,
-                    'color': '#9EA0A4',
-                },
-                'category': 'hard_fact',
-                'question_type': {
-                    'type': 'single_choice',
-                    'opt': [
-                        {'label': 'not important', 'value': 'not important'},
-                        {'label': 'important', 'value': 'important'},
-                        {'label': 'very important', 'value': 'very important'},
-                    ],
-                },
-            },
-            {
-                'question': {
-                    'label': 'How important is the age of your partner to you?',
-                    'value': null,
-                    'color': '#9EA0A4',
-                },
-                'category': 'hard_fact',
-                'question_type': {
-                    'type': 'single_choice',
-                    'opt': [
-                        {'label': 'not important', 'value': 'not important'},
-                        {'label': 'important', 'value': 'important'},
-                        {'label': 'very important', 'value': 'very important'},
-                    ],
-                },
-            },
-        ],
-    },
-    {
-        title: 'Sides',
-        data: [{
-            'question': {
-                'label': 'What is your gender?',
-                'value': null,
-                'color': '#9EA0A4',
-            },
-            'category': 'hard_fact',
-            'question_type': {
-                'type': 'single_choice',
-                'opt': [
-                    {'label': 'not important', 'value': 'not important'},
-                    {'label': 'important', 'value': 'important'},
-                ],
-            },
-        },
-        ],
-    },
-];
+const getPollFromServer = () => {
+    return fetch('http://localhost:8080/questionnare/rest/poll')
+        .then(response => {
+            return response.json();
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+};
 
-const App = () => (
-    <SafeAreaView style={styles.container}>
-        <View>
-        <SectionList
-            sections={DATA}
-            keyExtractor={(item, index) => item + index}
-            renderItem={({item}) =>
-                <RNPickerSelect
-                    placeholder={item.question}
-                    onValueChange={(value) => console.log(value)}
-                    items={item.question_type.opt}
-                />
-            }
-            renderSectionHeader={({section: {title}}) => (
-                <Text style={styles.header}>{title}</Text>
-            )}
+const postAnswers = (state) => {
+    const answerValues = [];
+    for (const key in state.answers) {
+        answerValues.push(state.answers[key]);
+    }
+    const data = JSON.stringify( answerValues ) ;
+    console.log("deni "+ data )
+    fetch('http://localhost:8080/questionnare/rest/answers',
+        {
+            method: "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: data
+        })
+        .then(response => {
+            window.location.reload(true);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+};
 
-        />
-        </View>
-        <View style={styles.pollEndButton}>
-            <Text style={styles.title}/>
-                <Button
-                    name='submit'
-                    onPress={() => {
-                        getMoviesFromApi(); //usual call like vanilla javascript, but uses this operator
-                    }}
-                    title="Submit">
-                </Button>
-        </View>
-    </SafeAreaView>
-);
+export default class App extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
+    state = {questions: [], answers: {}};
+
+    componentDidMount() {
+        this._asyncRequest = getPollFromServer().then(
+            data => {
+                this._asyncRequest = null;
+                this.setState({questions: data});
+            },
+        );
+    }
+
+    componentWillUnmount() {
+        if (this._asyncRequest) {
+            this._asyncRequest.cancel();
+        }
+    }
+
+    render() {
+        if (this.state.questions === null) {
+            return (
+                <View>
+                    <ActivityIndicator size="large"/>
+                </View>
+            );
+        } else {
+            return (
+                <SafeAreaView style={styles.container}>
+                    <View>
+                        <Text style={styles.text}> Please fill the personnel questionnaire below.</Text>
+                        <SectionList
+                            sections={this.state.questions}
+                            keyExtractor={(item, index) => item + index}
+                            renderItem={({item}) =>
+                                <RNPickerSelect
+                                    placeholder={item}
+                                    onValueChange={(value) => (
+                                        this.setState(state => {
+                                            // TODO if I had a chance to implement number range I would be sending in "selection" attribute instead of option id, number value
+                                            state.answers[item.value] = {"questionType":item.questionType, "questionId":item.value, "selection":value} ;
+                                        })
+                                    )}
+                                    items={item.options}
+                                />
+                            }
+                            renderSectionHeader={({section: {title}}) => (
+                                <Text style={styles.header}>{title}</Text>
+                            )}
+                        />
+                    </View>
+                    <View style={styles.pollEndButton}>
+                        <Text style={styles.title}/>
+                        <Button
+                            name='submit'
+                            onPress={() => {
+                                postAnswers(this.state);
+                                alert(
+                                    "Submitting your answers."
+                                );
+                            }}
+                            title="Submit">
+                        </Button>
+                    </View>
+                </SafeAreaView>
+            );
+        }
+    }
+}
 
 const styles = StyleSheet.create({
     container: {
@@ -120,7 +118,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 16,
     },
     pollEndButton: {
-        alignItems: 'flex-end'
+        alignItems: 'flex-end',
     },
     header: {
         fontSize: 32,
@@ -138,15 +136,4 @@ const styles = StyleSheet.create({
     },
 });
 
-const getMoviesFromApi = () => {
-    return fetch('http://localhost:8080/personal_questionnare_war_exploded/rest/show-on-screen/denix')
-        .then((response) => response.json())
-        .then((json) => {
-            return json.movies;
-        })
-        .catch((error) => {
-            console.error(error);
-        });
-};
 
-export default App;

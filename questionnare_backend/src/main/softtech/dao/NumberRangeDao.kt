@@ -1,8 +1,6 @@
 package main.softtech.dao
 
-import main.softtech.db_model.Answer
 import main.softtech.db_model.NumberRange
-import main.softtech.db_model.Option
 import org.apache.log4j.LogManager
 import org.springframework.transaction.annotation.Transactional
 import javax.persistence.TypedQuery
@@ -36,11 +34,15 @@ open class NumberRangeDao : BaseDao<NumberRange>() {
     return query.resultList
   }
 
-  companion object {
-    private val logger = LogManager.getLogger(NumberRangeDao::class.java)
-  }
-
   override fun getAll(): List<NumberRange> {
     TODO("Not yet implemented")
+  }
+
+  override fun findSingleEntityById(id: Int) : NumberRange?{
+    TODO("Not yet implemented")
+  }
+
+  companion object {
+    private val logger = LogManager.getLogger(NumberRangeDao::class.java)
   }
 }

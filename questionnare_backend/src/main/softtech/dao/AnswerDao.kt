@@ -41,4 +41,8 @@ open class AnswerDao : BaseDao<Answer>() {
   override fun getAll(): List<Answer> {
     TODO("Not yet implemented")
   }
+
+  override fun findSingleEntityById(id: Int) : Answer? {
+    TODO("Not yet implemented")
+  }
 }

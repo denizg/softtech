@@ -6,8 +6,12 @@ import main.softtech.db_model.ConditionalQuestion
 import main.softtech.db_model.NumberRange
 import main.softtech.db_model.Option
 import main.softtech.db_model.Question
+import main.softtech.model.NumberRangeModel
+import main.softtech.model.OptionModel
+import main.softtech.model.PollItemModel
 import main.softtech.model.PollModel
 import main.softtech.model.QuestionModel
+import main.softtech.model.SectionedPollResultModel
 import org.apache.log4j.LogManager
 import org.springframework.beans.factory.annotation.Autowired
 import javax.ws.rs.Consumes
@@ -22,19 +26,46 @@ import javax.ws.rs.core.Response
 class PollService {
   @Autowired
   lateinit var questionDao: BaseDao<Question>
+
   @Autowired
   lateinit var optionDao: BaseDao<Option>
+
   @Autowired
   lateinit var conditionalQuestionDao: BaseDao<ConditionalQuestion>
+
   @Autowired
   lateinit var numberRangeDao: BaseDao<NumberRange>
 
   @GET
   @Produces(MediaType.APPLICATION_JSON)
-  fun getPoll(): Response {
+  fun getPolls(): Response {
     return try {
-      val questions = questionDao.getAll()
-      return Response.ok(ObjectMapper().writeValueAsString(questions)).build()
+      val pollItems = questionDao.getAll().map { question ->
+        val options = question.options?.map { option -> OptionModel(value = option.id!!, label = option.optionText) }
+        val numberRange = question.numberRange?.let {
+          NumberRangeModel(numberRangeId = it.id!!, from = it.fromRange, to = it.toRange)
+        }
+        PollItemModel(
+          value = question.id!!,
+          category = question.category,
+          questionType = question.questionType,
+          label = question.questionText,
+          options = options,
+          numberRange = numberRange
+        )
+      }
+
+      val categoryMappedItems = pollItems.groupBy { it.category }.map { SectionedPollResultModel(it.key, it.value) }
+      return Response
+        .status(Response.Status.OK)
+        .header("Access-Control-Allow-Origin", "*")
+        .header("Access-Control-Allow-Credentials", "true")
+        .header("Access-Control-Allow-Headers",
+          "origin, content-type, accept, authorization")
+        .header("Access-Control-Allow-Methods",
+          "GET, POST, PUT, DELETE, OPTIONS, HEAD")
+        .entity(categoryMappedItems)
+        .build();
     } catch (e: Exception) {
       logger.error("Cannot create Poll.", e)
       Response.serverError().entity("Cannot create Poll. Error is [${e.message}]").build()
@@ -102,12 +133,12 @@ class PollService {
     }
   }
 
-  private fun processNumberRangeIfPossible(questionModel: QuestionModel, question : Question){
+  private fun processNumberRangeIfPossible(questionModel: QuestionModel, question: Question) {
     // Process Number Range
-    if(questionModel.questionType.type == "number_range"){
+    if (questionModel.questionType.type == "number_range") {
       val from = questionModel.questionType.range?.getValue("from")
       val to = questionModel.questionType.range?.getValue("to")
-      if(from != null && from is Int && to !=null && to is Int){
+      if (from != null && from is Int && to != null && to is Int) {
         numberRangeDao.save(NumberRange(from, to, question))
       }
     }

@@ -3,6 +3,7 @@ package main.softtech.db_model
 import main.softtech.db_model.Question
 import javax.persistence.Column
 import javax.persistence.Entity
+import javax.persistence.FetchType
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
@@ -16,11 +17,11 @@ class NumberRange(
   val fromRange: Int,
   @Column(name = "to_range")
   val toRange: Int,
-  @OneToOne
+  @OneToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "question_fk", nullable = false)
   val question: Question
 ) {
-  constructor() : this(0,0,Question()) {
+  constructor() : this(0,0, Question()) {
   }
 
   @Id

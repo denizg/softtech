@@ -29,9 +29,9 @@ class Question(
   @Column(name = "id")
   var id: Int? = null
 
-  @OneToMany(fetch = FetchType.EAGER, mappedBy = "question")
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "question")
   val options : Set<Option>? = null
 
-  @OneToOne(fetch = FetchType.EAGER, mappedBy = "question")
+  @OneToOne(fetch = FetchType.LAZY, mappedBy = "question")
   val numberRange : NumberRange? = null
 }

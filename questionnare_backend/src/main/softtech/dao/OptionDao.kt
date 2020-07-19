@@ -1,6 +1,5 @@
 package main.softtech.dao
 
-import main.softtech.db_model.Answer
 import main.softtech.db_model.Option
 import org.apache.log4j.LogManager
 import org.springframework.transaction.annotation.Transactional
@@ -13,7 +12,7 @@ import javax.persistence.criteria.Root
 open class OptionDao : BaseDao<Option>() {
 
   @Transactional
-  override fun save(model: Option) : Int{
+  override fun save(model: Option): Int {
     return try {
       getCurrentSession().save(model) as Int
     } catch (e: Exception) {
@@ -35,11 +34,20 @@ open class OptionDao : BaseDao<Option>() {
     return query.resultList
   }
 
-  companion object {
-    private val logger = LogManager.getLogger(OptionDao::class.java)
-  }
-
   override fun getAll(): List<Option> {
     TODO("Not yet implemented")
+  }
+
+  override fun findSingleEntityById(id: Int): Option? {
+    return try {
+      getCurrentSession().get(Option::class.java, id) as Option
+    } catch (e: Exception) {
+      logger.error("Cannot read Option with Id $id from database.")
+      null
+    }
+  }
+
+  companion object {
+    private val logger = LogManager.getLogger(OptionDao::class.java)
   }
 }

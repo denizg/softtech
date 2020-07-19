@@ -3,6 +3,7 @@ package main.softtech.db_model
 import main.softtech.db_model.Question
 import javax.persistence.Column
 import javax.persistence.Entity
+import javax.persistence.FetchType
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
@@ -13,7 +14,7 @@ import javax.persistence.ManyToOne
 class Option(
   @Column(name = "option_text")
   val optionText: String,
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "question_fk", nullable = false)
   val question: Question
 ) {

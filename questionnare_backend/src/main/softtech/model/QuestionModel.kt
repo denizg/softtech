@@ -11,6 +11,7 @@ import main.softtech.db_model.Question
 class QuestionModel (@JsonProperty("question") val question : String,
   @JsonProperty("category") val category : String,
   @JsonProperty("question_type") val questionType : QuestionTypeModel) {
+
   fun toQuestionDBModel(): Question {
     return Question(question, category, questionType.type)
   }
