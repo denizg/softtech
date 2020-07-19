@@ -1,0 +1,91 @@
+{
+	"info": {
+		"_postman_id": "d5fb547c-72a0-469f-9a88-cc7df4e0da12",
+		"name": "Softtech",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Insert Poll",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"categories\": [\r\n        \"hard_fact\",\r\n        \"lifestyle\",\r\n        \"introversion\",\r\n        \"passion\"\r\n    ],\r\n    \"questions\": [\r\n        {\r\n            \"question\": \"What is your gender?\",\r\n            \"category\": \"hard_fact\",\r\n            \"question_type\": {\r\n                \"type\": \"single_choice\",\r\n                \"options\": [\r\n                    \"male\",\r\n                    \"female\",\r\n                    \"other\"\r\n                ]\r\n            }\r\n        },\r\n        {\r\n            \"question\": \"How important is the gender of your partner?\",\r\n            \"category\": \"hard_fact\",\r\n            \"question_type\": {\r\n                \"type\": \"single_choice\",\r\n                \"options\": [\r\n                    \"not important\",\r\n                    \"important\",\r\n                    \"very important\"\r\n                ]\r\n            }\r\n        },\r\n        {\r\n            \"question\": \"How important is the age of your partner to you?\",\r\n            \"category\": \"hard_fact\",\r\n            \"question_type\": {\r\n                \"type\": \"single_choice_conditional\",\r\n                \"options\": [\r\n                    \"not important\",\r\n                    \"important\",\r\n                    \"very important\"\r\n                ],\r\n                \"condition\": {\r\n                    \"predicate\": {\r\n                        \"exactEquals\": [\r\n                            \"${selection}\",\r\n                            \"very important\"\r\n                        ]\r\n                    },\r\n                    \"if_positive\": {\r\n                        \"question\": \"What age should your potential partner be?\",\r\n                        \"category\": \"hard_fact\",\r\n                        \"question_type\": {\r\n                            \"type\": \"number_range\",\r\n                            \"range\": {\r\n                                \"from\": 18,\r\n                                \"to\": 140\r\n                            }\r\n                        }\r\n                    }\r\n                }\r\n            }\r\n        },\r\n        {\r\n            \"question\": \"Do any children under the age of 18 live with you?\",\r\n            \"category\": \"hard_fact\",\r\n            \"question_type\": {\r\n                \"type\": \"single_choice\",\r\n                \"options\": [\r\n                    \"yes\",\r\n                    \"sometimes\",\r\n                    \"no\"\r\n                ]\r\n            }\r\n        },\r\n        {\r\n            \"question\": \"How should your potential partner respond to this question?\",\r\n            \"category\": \"lifestyle\",\r\n            \"question_type\": {\r\n                \"type\": \"single_choice\",\r\n                \"options\": [\r\n                    \"yes\",\r\n                    \"sometimes\",\r\n                    \"no\"\r\n                ]\r\n            }\r\n        },\r\n        {\r\n            \"question\": \"Could you imagine having children with your potential partner?\",\r\n            \"category\": \"lifestyle\",\r\n            \"question_type\": {\r\n                \"type\": \"single_choice\",\r\n                \"options\": [\r\n                    \"yes\",\r\n                    \"maybe\",\r\n                    \"no\"\r\n                ]\r\n            }\r\n        },\r\n        {\r\n            \"question\": \"How should your potential partner respond to this question?\",\r\n            \"category\": \"lifestyle\",\r\n            \"question_type\": {\r\n                \"type\": \"single_choice\",\r\n                \"options\": [\r\n                    \"yes\",\r\n                    \"maybe\",\r\n                    \"no\"\r\n                ]\r\n            }\r\n        },\r\n        {\r\n            \"question\": \"What is your marital status?\",\r\n            \"category\": \"hard_fact\",\r\n            \"question_type\": {\r\n                \"type\": \"single_choice\",\r\n                \"options\": [\r\n                    \"never married\",\r\n                    \"separated\",\r\n                    \"divorced\",\r\n                    \"widowed\"\r\n                ]\r\n            }\r\n        },\r\n        {\r\n            \"question\": \"How often do your drink alcohol?\",\r\n            \"category\": \"lifestyle\",\r\n            \"question_type\": {\r\n                \"type\": \"single_choice\",\r\n                \"options\": [\r\n                    \"never\",\r\n                    \"once or twice a year\",\r\n                    \"once or twice a month\",\r\n                    \"once or twice a week\",\r\n                    \"I'm drinking my 3rd mojito now, and it's only 11am\"\r\n                ]\r\n            }\r\n        },\r\n        {\r\n            \"question\": \"How often do you smoke?\",\r\n            \"category\": \"lifestyle\",\r\n            \"question_type\": {\r\n                \"type\": \"single_choice\",\r\n                \"options\": [\r\n                    \"never\",\r\n                    \"once or twice a year\",\r\n                    \"socially\",\r\n                    \"frequently\"\r\n                ]\r\n            }\r\n        },\r\n        {\r\n            \"question\": \"What is your attitude towards drugs?\",\r\n            \"category\": \"lifestyle\",\r\n            \"question_type\": {\r\n                \"type\": \"single_choice\",\r\n                \"options\": [\r\n                    \"I'm completely opposed\",\r\n                    \"I've been know to dabble\",\r\n                    \"drugs enrich my life\"\r\n                ]\r\n            }\r\n        },\r\n        {\r\n            \"question\": \"You are looking for...\",\r\n            \"category\": \"lifestyle\",\r\n            \"question_type\": {\r\n                \"type\": \"single_choice\",\r\n                \"options\": [\r\n                    \"friendship\",\r\n                    \"a hot date\",\r\n                    \"an affair\",\r\n                    \"a short-term relationship\",\r\n                    \"a long-term relationship\"\r\n                ]\r\n            }\r\n        },\r\n        {\r\n            \"question\": \"Would you like to get married?\",\r\n            \"category\": \"lifestyle\",\r\n            \"question_type\": {\r\n                \"type\": \"single_choice\",\r\n                \"options\": [\r\n                    \"yes\",\r\n                    \"probably\",\r\n                    \"eventually\",\r\n                    \"no\"\r\n                ]\r\n            }\r\n        },\r\n        {\r\n            \"question\": \"What is your ideal living arrangement?\",\r\n            \"category\": \"lifestyle\",\r\n            \"question_type\": {\r\n                \"type\": \"single_choice\",\r\n                \"options\": [\r\n                    \"cohabitation\",\r\n                    \"separate flat / room in the same building\",\r\n                    \"separate flats in the same area\",\r\n                    \"weekend-relationship\",\r\n                    \"long distance relationship\"\r\n                ]\r\n            }\r\n        },\r\n        {\r\n            \"question\": \"Do you enjoy spending time alone?\",\r\n            \"category\": \"introversion\",\r\n            \"question_type\": {\r\n                \"type\": \"single_choice\",\r\n                \"options\": [\r\n                    \"most of the time\",\r\n                    \"often\",\r\n                    \"sometimes\",\r\n                    \"rarely\",\r\n                    \"not at all\"\r\n                ]\r\n            }\r\n        },\r\n        {\r\n            \"question\": \"When you're alone, do you get lonely quickly?\",\r\n            \"category\": \"introversion\",\r\n            \"question_type\": {\r\n                \"type\": \"single_choice\",\r\n                \"options\": [\r\n                    \"most of the time\",\r\n                    \"often\",\r\n                    \"sometimes\",\r\n                    \"rarely\",\r\n                    \"not at all\"\r\n                ]\r\n            }\r\n        },\r\n        {\r\n            \"question\": \"Do you enjoy going on holiday by yourself?\",\r\n            \"category\": \"introversion\",\r\n            \"question_type\": {\r\n                \"type\": \"single_choice\",\r\n                \"options\": [\r\n                    \"most of the time\",\r\n                    \"often\",\r\n                    \"sometimes\",\r\n                    \"rarely\",\r\n                    \"not at all\"\r\n                ]\r\n            }\r\n        },\r\n        {\r\n            \"question\": \"I consciously take \\\"me time\\\"\",\r\n            \"category\": \"introversion\",\r\n            \"question_type\": {\r\n                \"type\": \"single_choice\",\r\n                \"options\": [\r\n                    \"most of the time\",\r\n                    \"often\",\r\n                    \"sometimes\",\r\n                    \"rarely\",\r\n                    \"not at all\"\r\n                ]\r\n            }\r\n        },\r\n        {\r\n            \"question\": \"Should one keep little secrets from one's partner?\",\r\n            \"category\": \"introversion\",\r\n            \"question_type\": {\r\n                \"type\": \"single_choice\",\r\n                \"options\": [\r\n                    \"most of the time\",\r\n                    \"often\",\r\n                    \"sometimes\",\r\n                    \"rarely\",\r\n                    \"not at all\"\r\n                ]\r\n            }\r\n        },\r\n        {\r\n            \"question\": \"How often do you think about sex?\",\r\n            \"category\": \"passion\",\r\n            \"question_type\": {\r\n                \"type\": \"single_choice\",\r\n                \"options\": [\r\n                    \"a few times a day\",\r\n                    \"daily\",\r\n                    \"a few times a week\",\r\n                    \"a few times a month\",\r\n                    \"rarely\"\r\n                ]\r\n            }\r\n        },\r\n        {\r\n            \"question\": \"If you were alone on a desert island, how long would you last before pleasuring yourself?\",\r\n            \"category\": \"passion\",\r\n            \"question_type\": {\r\n                \"type\": \"single_choice\",\r\n                \"options\": [\r\n                    \"less than a day\",\r\n                    \"one day\",\r\n                    \"one week\",\r\n                    \"one month\",\r\n                    \"I'd never do something like that\"\r\n                ]\r\n            }\r\n        },\r\n        {\r\n            \"question\": \"How often would you like to have sex with your prospective partner?\",\r\n            \"category\": \"passion\",\r\n            \"question_type\": {\r\n                \"type\": \"single_choice\",\r\n                \"options\": [\r\n                    \"every day\",\r\n                    \"a few times a week\",\r\n                    \"once a week\",\r\n                    \"every two weeks\",\r\n                    \"infrequently\",\r\n                    \"rarely\"\r\n                ]\r\n            }\r\n        },\r\n        {\r\n            \"question\": \"Do you like trying out new things in bed and experimenting?\",\r\n            \"category\": \"passion\",\r\n            \"question_type\": {\r\n                \"type\": \"single_choice\",\r\n                \"options\": [\r\n                    \"Yes, definitely!\",\r\n                    \"Now and then - why not?\",\r\n                    \"I'd give it a try\",\r\n                    \"I don't know\",\r\n                    \"Absolutely not\"\r\n                ]\r\n            }\r\n        },\r\n        {\r\n            \"question\": \"I can enjoy sex without love\",\r\n            \"category\": \"passion\",\r\n            \"question_type\": {\r\n                \"type\": \"single_choice\",\r\n                \"options\": [\r\n                    \"always\",\r\n                    \"often\",\r\n                    \"sometimes\",\r\n                    \"rarely\",\r\n                    \"never\"\r\n                ]\r\n            }\r\n        },\r\n        {\r\n            \"question\": \"For me, a stable relationship is a prerequisite for really good sex\",\r\n            \"category\": \"passion\",\r\n            \"question_type\": {\r\n                \"type\": \"single_choice\",\r\n                \"options\": [\r\n                    \"always\",\r\n                    \"often\",\r\n                    \"sometimes\",\r\n                    \"rarely\",\r\n                    \"never\"\r\n                ]\r\n            }\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/questionnare/rest/poll",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"questionnare",
+						"rest",
+						"poll"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Questions",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/questionnare/rest/poll",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"questionnare",
+						"rest",
+						"poll"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PostAnswers",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[{\"questionType\":\"single_choice\",\"questionId\":409,\"selection\":\"1728\"},{\"questionType\":\"single_choice\",\"questionId\":414,\"selection\":\"1747\"},{\"questionType\":\"single_choice\",\"questionId\":417,\"selection\":\"1758\"},{\"questionType\":\"single_choice\",\"questionId\":422,\"selection\":\"1785\"}]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/questionnare/rest/answers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"questionnare",
+						"rest",
+						"answers"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
