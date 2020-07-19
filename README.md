@@ -1,4 +1,4 @@
-# Personel Questionnare Application
+# Personnal Questionnare Application
 
 Personel Questionnare Application is a polling application that can be used with different questions and options. It supports web browsers, IOS and Android Application platforms. 
 
